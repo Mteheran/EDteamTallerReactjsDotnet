@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import UserComponent from './Components/UserScreen'
+import ChatRoomScreen from './Components/ChatRoomsScreen'
 
 function App() {
 
@@ -10,17 +11,25 @@ function App() {
   .then(p=> setMessage(p.data))
   .catch(e=> console.error(e));
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {message}
-        </p>
-       
-      </header>
-    </div>
-  );
+  if(sessionStorage.getItem('name') && sessionStorage.getItem('name') !== '')
+  {
+    return (
+      <ChatRoomScreen></ChatRoomScreen>
+    );   
+  }
+  else
+  {
+    return (
+
+      <div className="App">      
+          <p>
+            {message}
+          </p>
+          <UserComponent />
+      </div>
+    );
+  }
+ 
 }
 
 export default App;
