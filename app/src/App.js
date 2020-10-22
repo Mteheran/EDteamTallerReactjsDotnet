@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import UserScreen from './Components/UserScreen'
+import Salas from './Components/Salas';
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
   {
     return (
       <div>
-        Bienvenido a las salas
+       <Salas></Salas>
       </div>
     );
   }
