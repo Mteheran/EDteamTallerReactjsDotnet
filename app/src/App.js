@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import UserScreen from './Components/UserScreen'
-import Salas from './Components/Salas';
+import ChatRoomsScreen from './Components/SalaChat';
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
   {
     return (
       <div>
-       <Salas></Salas>
+       <ChatRoomsScreen></ChatRoomsScreen>
       </div>
     );
   }
