@@ -1,0 +1,42 @@
+.chat-menu{
+    background-color: #2071a8;
+    overflow-y: auto;
+    padding: 15px 0;
+    min-width: 120px;
+  }
+  
+  .ed-container.chat{
+    flex-wrap: nowrap;
+  }
+  
+  .chat-menu__option{
+    padding: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .chat-menu__option:hover{
+    background-color:#3081b8;
+  }
+  
+  .chat-info{
+    flex-direction: column-reverse;
+    display: flex;
+    height: calc(100vh - 100px) ;
+    overflow-y: scroll;
+  }
+  
+  .chat-info__user{
+    font-weight: bold;
+  }
+  
+  .chat-text{
+    resize: none;
+    width: calc(100% - 18px);
+    padding: 5px 15px;
+    font-family: sans-serif;
+  }
