@@ -7,7 +7,7 @@ namespace api.Models
 {
     public class Message
     {
-        public Guid MessageId {get;set;}
+        public Guid MessageId {get;set;} = Guid.NewGuid();
 
         public Guid RoomId {get;set;}
 

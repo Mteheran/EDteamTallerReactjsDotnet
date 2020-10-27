@@ -9,10 +9,10 @@ namespace api
 {
     public class ChatContext : DbContext
     {
-        DbSet<Room> Rooms {get;set;}
-        DbSet<Message> Messages {get;set;}
-        DbSet<LogBook> LogBooks {get;set;}
-        public ChatContext(DbContextOptions<DbContext> options) : base(options) { }
+        public DbSet<Room> Rooms {get;set;}
+        public DbSet<Message> Messages {get;set;}
+        public DbSet<LogBook> LogBooks {get;set;}
+        public ChatContext(DbContextOptions<ChatContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,6 +21,13 @@ namespace api
             builder.Entity<Room>().HasMany(p=> p.Messages);
             builder.Entity<Message>().HasKey(p=> p.MessageId);
             builder.Entity<LogBook>().HasKey(p=> p.LogBookId);
+
+            List<Room> rooms = new List<Room>();
+            rooms.Add(new Room() { Name = "Deportes", Description = "Sala para hablar de deporte"});
+            rooms.Add(new Room() { Name = "Cine", Description = "Sala para hablar de cine"});
+            rooms.Add(new Room() { Name = "Ventas", Description = "Sala para vender cosas"});
+
+            builder.Entity<Room>().HasData(rooms);
         }
         
     }

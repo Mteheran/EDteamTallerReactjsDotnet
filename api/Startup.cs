@@ -28,9 +28,13 @@ namespace api
         {
             services.AddControllers();
 
-            services.AddDbContext<ChatContext>(options=>
-            {
-                options.UseInMemoryDatabase("chatApp");                
+            //services.AddDbContext<ChatContext>(options=>
+            //{
+            //    options.UseInMemoryDatabase("chatApp");                
+            //});
+
+            services.AddDbContext<ChatContext>(options => {
+                   options.UseSqlServer(@"Data Source=MTEHERAN\LOCALDB;Initial Catalog=ChatDB;Integrated Security=SSPI;");
             });
         }
 
@@ -42,7 +46,7 @@ namespace api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseCors(p=> p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 

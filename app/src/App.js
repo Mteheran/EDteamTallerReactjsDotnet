@@ -7,7 +7,7 @@ import ChatRoomScreen from './Components/ChatRoomsScreen'
 function App() {
 
   const [message, setMessage] = useState('');
-  axios.get("https://Localhost:5001/api/hello")
+  axios.get(process.env.REACT_APP_API_URL + "hello")
   .then(p=> setMessage(p.data))
   .catch(e=> console.error(e));
 

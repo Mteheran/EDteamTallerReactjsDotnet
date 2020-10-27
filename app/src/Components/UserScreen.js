@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import 'ed-grid'
+import axios from 'axios'
 
 export default function UserScreen() {
 
@@ -7,7 +8,9 @@ export default function UserScreen() {
 
     const saveUser = () => {
         sessionStorage.setItem("name", userName);
-        window.location.reload();
+        axios.post(process.env.REACT_APP_API_URL + "LogBook", {userName: userName})
+        .then(()=> window.location.reload())
+        .catch(e=> console.error(e));
     }
     return (
         <div className="lg-50 lg-to-center s-border s-radius">
