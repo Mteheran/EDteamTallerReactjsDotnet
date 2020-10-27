@@ -39,11 +39,12 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Message value)
+        public async Task Post([FromBody] Message value)
         {
             value.MessageId = Guid.NewGuid();
             value.MessageDate = DateTime.Now;
             context.Messages.Add(value);
+            await context.SaveChangesAsync();
         }
 
         [HttpPut("{id}")]
