@@ -29,7 +29,7 @@ namespace api.Controllers
         [Route("GetMessagesByRoomId/{id}")]
         public ActionResult<IEnumerable<Message>> GetMessagesByRoomId(string id)
         {
-            return Ok(context.Messages.Where(p=> p.RoomId == Guid.Parse(id)));
+            return Ok(context.Messages.Where(p=> p.RoomId == Guid.Parse(id)).OrderByDescending(p=> p.MessageDate));
         }
 
         [HttpGet("{id}")]

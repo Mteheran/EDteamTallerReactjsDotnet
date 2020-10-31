@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,8 @@ namespace api
             //    options.UseInMemoryDatabase("chatApp");                
             //});
 
+            services.AddSignalR();
+
             services.AddDbContext<ChatContext>(options => {
                    options.UseSqlServer(@"Data Source=MTEHERAN\LOCALDB;Initial Catalog=ChatDB;Integrated Security=SSPI;");
             });
@@ -57,6 +60,7 @@ namespace api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
             
             app.UseWelcomePage();

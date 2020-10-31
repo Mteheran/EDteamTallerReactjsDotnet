@@ -18,6 +18,16 @@
     width: 100%;
     cursor: pointer;
   }
+
+  .chat-menu__selected{
+    padding: 10px;
+    background: none;
+    border: none;
+    color: darkblue;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+  }
   
   .chat-menu__option:hover{
     background-color:#3081b8;
@@ -26,7 +36,7 @@
   .chat-info{
     flex-direction: column-reverse;
     display: flex;
-    height: calc(100vh - 100px) ;
+    height: calc(100vh - 150px) ;
     overflow-y: scroll;
   }
   

@@ -15,6 +15,7 @@ export default function ChatRoomsScreen() {
             {
                 setRoom(p.data);
                 setcurrentRoom(p.data[0]);
+                getMessages(p.data[0].roomId);
             })
         .catch(error=> console.error(error));
     }, []); 
@@ -26,9 +27,28 @@ export default function ChatRoomsScreen() {
             const name = sessionStorage.getItem('name');
             const message =  { userName:name, content: event.target.value, roomId: currentRoom.roomId }
             axios.post(process.env.REACT_APP_API_URL + "Message", message)
-            .then(()=> setMessages([message]))
+            .then(()=>  { 
+                setMessages([message, ...messages])
+                document.getElementsByClassName("chat-text")[0].value = '';
+            })
             .catch(error=> console.error(error))
         }
+    }
+
+    const changeRoom = (room) =>
+    {
+        setcurrentRoom(room);
+        getMessages(room.roomId);
+    }
+
+    const getMessages = (roomId)=>
+    {
+        axios.get(process.env.REACT_APP_API_URL + "Message/GetMessagesByRoomId/" + roomId)
+        .then(p=> 
+            { 
+                setMessages(p.data)
+            })
+        .catch(error=> console.error(error));
     }
 
     return (
@@ -40,7 +60,7 @@ export default function ChatRoomsScreen() {
              {
                  room.map(item=> 
                     {
-                    return <button  key={item.roomId} className="chat-menu__option"># {item.name}</button>
+                    return <button  key={item.roomId} className={item.roomId == currentRoom.roomId ? "chat-menu__selected" : "chat-menu__option"} onClick={()=> changeRoom(item)}># {item.name}</button>
                     })
              }
             </div>
