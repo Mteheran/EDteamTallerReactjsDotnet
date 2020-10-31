@@ -1,14 +1,35 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './ChatRoomScreen.css'
 import axios from 'axios'
 
 export default function ChatRoomsScreen() {
 
     const [room, setRoom] = useState([])
+    const [messages, setMessages] = useState([])
+    const [currentRoom, setcurrentRoom] = useState('')
 
-    axios.get(process.env.REACT_APP_API_URL + "Room")
-    .then(p=> setRoom(p.data))
-    .catch(error=> console.error(error));
+    useEffect( ()=>
+    {
+        axios.get(process.env.REACT_APP_API_URL + "Room")
+        .then(p=> 
+            {
+                setRoom(p.data);
+                setcurrentRoom(p.data[0]);
+            })
+        .catch(error=> console.error(error));
+    }, []); 
+
+    const sendMessage = (event) =>
+    {
+        if(event.key === 'Enter')
+        {
+            const name = sessionStorage.getItem('name');
+            const message =  { userName:name, content: event.target.value, roomId: currentRoom.roomId }
+            axios.post(process.env.REACT_APP_API_URL + "Message", message)
+            .then(()=> setMessages([message]))
+            .catch(error=> console.error(error))
+        }
+    }
 
     return (
         <div className="ed-grid">
@@ -19,18 +40,24 @@ export default function ChatRoomsScreen() {
              {
                  room.map(item=> 
                     {
-                    return <button className="chat-menu__option"># {item.name}</button>
+                    return <button  key={item.roomId} className="chat-menu__option"># {item.name}</button>
                     })
              }
             </div>
             <div className="ed-item s-90">
                 <div className="chat-info">
-                    <div className="chat-info__window">
-                        <span className="chat-info__user">User Name:</span>
-                        <p className="chat-info_info">Hola Mundo!!!</p>
-                    </div>
+                    {
+                        messages.map(item=> 
+                            {
+                                return  <div key={item.messageId} className="chat-info__window">
+                                            <span className="chat-info__user">User Name: {item.userName}</span>
+                                            <p className="chat-info_info">{item.content}</p>
+                                        </div>
+
+                            })
+                    }
                 </div>
-                <textarea className="chat-text" placeholder="Escriba un mensaje"></textarea>
+                <textarea className="chat-text" placeholder="Escriba un mensaje" onKeyUp={sendMessage}></textarea>
             
             </div>
 
