@@ -51,7 +51,10 @@ namespace api
 
             //app.UseHttpsRedirection();
 
-            app.UseCors(p=> p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(p=> { 
+                p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                p.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            });
 
             app.UseRouting();
 
@@ -60,7 +63,7 @@ namespace api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapHub<ChatHub>("/api/chat");
             });
             
             app.UseWelcomePage();

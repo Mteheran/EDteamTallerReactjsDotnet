@@ -1,12 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import './ChatRoomScreen.css'
 import axios from 'axios'
+import * as signalR from '@microsoft/signalr'
 
 export default function ChatRoomsScreen() {
 
     const [room, setRoom] = useState([])
     const [messages, setMessages] = useState([])
     const [currentRoom, setcurrentRoom] = useState('')
+    const [connectionSignalR, setconnectionSignalR] = useState({})
+
+    const lastmessage = useRef(null)
+    const lastRoom = useRef(null)
+    lastmessage.current = messages;
+    lastRoom.current = currentRoom;
 
     useEffect( ()=>
     {
@@ -18,6 +25,23 @@ export default function ChatRoomsScreen() {
                 getMessages(p.data[0].roomId);
             })
         .catch(error=> console.error(error));
+
+
+        let connection = new signalR.HubConnectionBuilder()
+        .withUrl(process.env.REACT_APP_API_URL +"chat")
+        .build();
+ 
+        connection.on("RecievedMessage", message => {
+            if(message.roomId == lastRoom.current.roomId)
+            {
+                setMessages([message, ...lastmessage.current])
+            }           
+        });
+        
+        connection.start()
+            .then(() => console.log('connection started'));
+
+        setconnectionSignalR(connection);
     }, []); 
 
     const sendMessage = (event) =>
@@ -29,6 +53,7 @@ export default function ChatRoomsScreen() {
             axios.post(process.env.REACT_APP_API_URL + "Message", message)
             .then(()=>  { 
                 setMessages([message, ...messages])
+                connectionSignalR.invoke("SendMessage", message)
                 document.getElementsByClassName("chat-text")[0].value = '';
             })
             .catch(error=> console.error(error))
@@ -70,7 +95,7 @@ export default function ChatRoomsScreen() {
                         messages.map(item=> 
                             {
                                 return  <div key={item.messageId} className="chat-info__window">
-                                            <span className="chat-info__user">User Name: {item.userName}</span>
+                                            <span className="chat-info__user">{item.userName} dice:</span>
                                             <p className="chat-info_info">{item.content}</p>
                                         </div>
 
